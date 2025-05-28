@@ -47,3 +47,27 @@ def expandAndReturnChildren(state_space, node):
       childnode = Node(n, node)
       children.append(childnode)
   return children
+
+def bfs(state_space, initial_state, goal_state):
+  root = Node(initial_state)
+  queue = [root]
+  visited = set()
+
+  while queue:
+    node = queue.pop(0)
+    if node.state == goal_state:
+      path = []
+      while node:
+        path.append(node.state)
+        node = node.parent
+      return path[::-1]  # Return reversed path
+
+    if node.state not in visited:
+      visited.add(node.state)
+      children = expandAndReturnChildren(state_space, node)
+      node.addChildren(children)
+      queue.extend(children)
+
+  return None  # If no solution is found
+
+print('Solution: ' + str(bfs(state_space, initial_state, goal_state)))
