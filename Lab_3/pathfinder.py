@@ -37,6 +37,8 @@ class Node:
   def addChildren(self, children):
     self.children.extend(children)
 
+
+# Function written by Copilot
 def expandAndReturnChildren(state_space, node):
   children = []
   for [n,m,c] in state_space:

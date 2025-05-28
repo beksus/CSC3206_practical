@@ -105,5 +105,5 @@ def bfs(state_space, initial_state, goal_state):
 
     return solution, path_cost
 
-# Run the BFS algorithm and print the solution
+# Run the BFS algorithm and print the solution written by CSC3206 AI Labs
 print('Solution: ' + str(bfs(state_space, initial_state, goal_state)))
