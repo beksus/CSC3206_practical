@@ -42,7 +42,7 @@ state_space = [
     [22, 16], [23, 17]
 ]
 
-# Treasures to collect
+# Treasures to collect (*remap it)
 TREASURES = {7, 15, 16, 18}
 TOTAL_TREASURES = len(TREASURES)
 
