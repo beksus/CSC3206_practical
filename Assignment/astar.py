@@ -86,7 +86,7 @@ def astar_all_treasures_with_traps(graph, start, TREASURES, TOTAL_TREASURES):
         for child in cell.children:
             step_cost = 1 / new_speed
             next_energy = energy_used + step_cost * new_gravity
-            h = heuristic(child.coordinate, seen_new, new_speed)
+            h = heuristic(child.coordinate, seen_new, new_speed, TREASURES)
             total_cost = next_energy + h
             heapq.heappush(heap, (
                 total_cost,
