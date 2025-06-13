@@ -84,6 +84,5 @@ def bfs_all_treasures_with_traps(graph, start, TREASURES, TOTAL_TREASURES):
 
     print("\nGame over. No complete treasure run.")
 
-# Run the search
-bfs_all_treasures_with_traps(0)
+
 
