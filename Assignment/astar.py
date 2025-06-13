@@ -4,7 +4,7 @@ import itertools
 
 
 # Heuristic function
-def heuristic(cell_coord, seen, speed):
+def heuristic(cell_coord, seen, speed, TREASURES):
     remaining = TREASURES - set(seen)
     if not remaining:
         return 0
