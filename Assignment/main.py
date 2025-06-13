@@ -1,6 +1,6 @@
-import bfs.py
-import ucs.py   
-import astar.py
+import bfs
+import ucs
+import astar
 
 def main():
     print("Welcome to the Pathfinding Algorithms Program!")
