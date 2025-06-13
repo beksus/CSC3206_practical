@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DeveloperToolsToolWindowSettingsV1" lastSelectedContentNodeId="json-text-escape" pluginVersion="7.1.0">
+    <developerToolsConfigurations>
+      <developerToolConfiguration developerToolId="qr-code-generator" id="2776d061-c1eb-4999-a102-cbd60e84f3f1" name="Workbench">
+        <properties>
+          <property key="contentText" type="INPUT" value="kotlin.String|http://BanAddictiveDesign.org" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="base64-encoder-decoder" id="93d14523-3852-44b5-bc9e-23ce0ac6e727" name="Workbench">
+        <properties>
+          <property key="liveConversion" type="CONFIGURATION" value="kotlin.Boolean|false" />
+          <property key="sourceText" type="INPUT" value="kotlin.String|hello" />
+          <property key="targetText" type="INPUT" value="kotlin.String|aGVsbG8=" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="ascii-art" id="3eb0ecb5-8c3f-4eed-b94b-dac7862b5a25" name="Workbench">
+        <properties>
+          <property key="textInput" type="INPUT" value="kotlin.String|-22rr" />
+          <property key="selectedFontFileName" type="CONFIGURATION" value="kotlin.String|slant.flf" />
+        </properties>
+      </developerToolConfiguration>
+    </developerToolsConfigurations>
+  </component>
+</project>
