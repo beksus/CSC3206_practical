@@ -2,6 +2,17 @@ from bfs import bfs_all_treasures_with_traps
 from ucs import ucs_all_treasures_with_traps
 from astar import astar_all_treasures_with_traps
 
+# Cell types: Legend
+#  
+#  1 = Reward 1 (gravity buff)
+#  2 = Reward 2 (speed buff)
+# -1 = Trap 1 (gravity debuff)
+# -2 = Trap 2 (speed debuff)
+# -3 = Trap 3 (pushback)
+# -4 = Trap 4 (delete uncollected treasures)
+#  9 = Treasure
+
+
 # Cell types mapping
 cell_types = {
     0: 0, 1: 0, 2 : 0, 4: 0, 5: 0, 6: 0,
@@ -20,7 +31,7 @@ cell_types = {
 state_space = [
     [0,1], [0,6], [0,7],
     [1,0], [1,7], [1,8],
-    
+
     
 ]
 
