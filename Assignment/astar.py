@@ -1,23 +1,27 @@
+
 import heapq
 import itertools
+from math import ceil
 
-
-
-# Heuristic function
-def heuristic(cell_coord, seen, speed, TREASURES):
+def heuristic(cell_coord, seen, TREASURES, graph):
     remaining = TREASURES - set(seen)
     if not remaining:
         return 0
-    min_dist = min(abs(cell_coord - t) for t in remaining)
-    return min_dist * (1 / speed)
 
-# A* with trap/buff logic
+    min_h = float('inf')
+    for t in remaining:
+        h = abs(cell_coord - t)
+        if graph[t].type == -1: h += 2   # Penalty for gravity trap
+        elif graph[t].type == 1: h -= 1  # Bonus for gravity buff
+        min_h = min(min_h, h)
+    # Assume best-case gravity (0.25) for admissibility
+    return min_h * 0.25
+
 def astar_all_treasures_with_traps(graph, start, TREASURES, TOTAL_TREASURES):
     visited = set()
     heap = []
-    counter = itertools.count()  # Unique counter for tie-breaking
+    counter = itertools.count()
 
-    # (f_cost, count, g_cost, cell, path, gravity, speed, g_buffs, s_buffs, seen_treasures)
     heapq.heappush(heap, (
         0, next(counter), 0, graph[start], [start], 1.0, 1.0, 0, 0, []
     ))
@@ -25,7 +29,8 @@ def astar_all_treasures_with_traps(graph, start, TREASURES, TOTAL_TREASURES):
     while heap:
         f_cost, _, energy_used, cell, path, gravity, speed, g_buff, s_buff, seen = heapq.heappop(heap)
 
-        key = (cell.coordinate, tuple(sorted(seen)))
+        # Improved visited key: includes gravity, speed, and seen treasures
+        key = (cell.coordinate, tuple(sorted(seen)), round(gravity, 2), round(speed, 2))
         if key in visited:
             continue
         visited.add(key)
@@ -34,45 +39,46 @@ def astar_all_treasures_with_traps(graph, start, TREASURES, TOTAL_TREASURES):
         new_speed = speed
         g_buff_new = g_buff
         s_buff_new = s_buff
-        seen_new = seen[:]
+        seen_new = list(seen)
 
-        # Trap / Reward logic
-        if cell.type == -3:
+        # === Handle Traps and Rewards ===
+        if cell.type == -1:  # Trap 1: gravity debuff
             new_gravity *= 2
-        elif cell.type == -2:
+        elif cell.type == -2:  # Trap 2: speed debuff
             new_speed *= 2
-        elif cell.type == -1:
+        elif cell.type == -3:  # Trap 3: pushback
             if len(path) >= 3:
                 back_cell_id = path[-3]
                 back_path = path[:-2]
                 heapq.heappush(heap, (
-                    energy_used + 2 * gravity,
+                    energy_used + 2 * new_gravity,
                     next(counter),
-                    energy_used + 2 * gravity,
+                    energy_used + 2 * new_gravity,
                     graph[back_cell_id],
                     back_path,
                     gravity,
                     speed,
                     g_buff,
                     s_buff,
-                    seen[:]
+                    list(seen)
                 ))
             continue
-        elif cell.type == -4:
+        elif cell.type == -4:  # Trap 4: kill if treasures not all
             if len(seen) < TOTAL_TREASURES:
                 continue
-        elif cell.type == 1:
+        elif cell.type == 1:  # Reward 1: gravity buff
             new_gravity *= 0.5
             g_buff_new += 1
-        elif cell.type == 2:
+        elif cell.type == 2:  # Reward 2: speed buff
             new_speed *= 0.5
             s_buff_new += 1
-        elif cell.type == 9:
+        elif cell.type == 9:  # Treasure
             if cell.coordinate in TREASURES and cell.coordinate not in seen_new:
-                seen_new.append(cell.coordinate)
+                seen_new = seen_new + [cell.coordinate]
 
+        # === Goal Check ===
         if len(seen_new) == TOTAL_TREASURES:
-            print("\n=== All Treasures Hunt Report ===")
+            print("\n=== A* All Treasures Hunt Report ===")
             print("Path taken:        ", path)
             print("Steps taken:       ", len(path) - 1)
             print("Energy used:       ", round(energy_used, 2))
@@ -83,11 +89,13 @@ def astar_all_treasures_with_traps(graph, start, TREASURES, TOTAL_TREASURES):
             print("Final speed rate:  ", new_speed)
             return
 
+        # === Expand Children ===
         for child in cell.children:
-            step_cost = 1 / new_speed
+            step_cost = ceil(1 * new_speed)
             next_energy = energy_used + step_cost * new_gravity
-            h = heuristic(child.coordinate, seen_new, new_speed, TREASURES)
+            h = heuristic(child.coordinate, seen_new, TREASURES, graph)
             total_cost = next_energy + h
+
             heapq.heappush(heap, (
                 total_cost,
                 next(counter),
@@ -102,4 +110,3 @@ def astar_all_treasures_with_traps(graph, start, TREASURES, TOTAL_TREASURES):
             ))
 
     print("\nGame over. No complete treasure run.")
-
