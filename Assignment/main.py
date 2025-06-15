@@ -28,7 +28,7 @@ cell_types = {
     }
 
 state_space = [
-    [0, 1], [0,6], [0,7]
+    [0, 1], [0,6], [0,7],
     [1, 0], [1, 2], [1, 7], [1, 8],
     [2, 1], [2, 8], [2, 9],
     [4, 5], [4, 10], [4, 11],
@@ -83,7 +83,7 @@ state_space = [
 
 
 # Treasures
-TREASURES = {7, 15, 16, 18}
+TREASURES = {22,25,45, 57}
 TOTAL_TREASURES = len(TREASURES)
 
 # Cell class
