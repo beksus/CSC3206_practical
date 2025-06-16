@@ -2,7 +2,6 @@ import heapq
 from itertools import count
 from math import ceil
 
-
 # Cell types: Legend
 #  
 #  1 = Reward 1 (gravity buff)
@@ -12,7 +11,6 @@ from math import ceil
 # -3 = Trap 3 (pushback)
 # -4 = Trap 4 (delete uncollected treasures)
 #  9 = Treasure
-
 
 # Cell types mapping
 cell_types = {
