@@ -1,49 +1,48 @@
-# Randomly generated new cell types, state space, and treasures for UCS algorithm testing
 import random
 
-# Define total number of cells
-NUM_CELLS = 60
+num_nodes = 60
+max_edges_per_node = 6  # Max neighbors per node
+possible_cell_types = [-4, -3, -2, -1, 0, 1, 2, 9]
+num_treasures = 3
 
-# Possible cell types (excluding empty 0)
-CELL_TYPE_OPTIONS = [1, 2, -1, -2, -3, -4, 9]
+# Generate cell_types
+cell_types = {}
+for node in range(num_nodes):
+    cell_types[node] = random.choice(possible_cell_types)
 
-# Randomly assign cell types
-cell_types_random = {i: random.choice([0] + CELL_TYPE_OPTIONS) for i in range(NUM_CELLS)}
+# Ensure exactly num_treasures treasures (value 9)
+treasure_nodes = random.sample(range(num_nodes), num_treasures)
+for node in treasure_nodes:
+    cell_types[node] = 9
 
-# Ensure at least 4 treasures exist
-treasure_cells = random.sample(range(NUM_CELLS), 4)
-for cell in treasure_cells:
-    cell_types_random[cell] = 9
+# Generate state_space (no self-loops, no duplicate edges)
+state_space = []
+connections = {i: set() for i in range(num_nodes)}
 
-# Generate random state space connections
-state_space_random = []
-for cell in range(NUM_CELLS):
-    connections = random.sample([i for i in range(NUM_CELLS) if i != cell], random.randint(2, 4))
-    for conn in connections:
-        state_space_random.append([cell, conn])
+for node in range(num_nodes):
+    current_edges = len(connections[node])
+    max_possible_new_edges = max_edges_per_node - current_edges
+    if max_possible_new_edges <= 0:
+        continue  # Node already has max edges
 
-# Deduplicate connections (make them undirected)
-state_space_set = set()
-for conn in state_space_random:
-    a, b = sorted(conn)
-    state_space_set.add((a, b))
-state_space_random = [list(pair) for pair in state_space_set]
+    min_edges = min(2, max_possible_new_edges)  # At least 2 if possible
+    max_edges = max_possible_new_edges
 
-# Determine treasures
-TREASURES_RANDOM = {cell for cell, val in cell_types_random.items() if val == 9}
+    if max_edges < 2:
+        num_edges = max_edges  # If less than 2 possible, take whatever possible
+    else:
+        num_edges = random.randint(2, max_edges)
 
-# Print results
-print("# Random Cell Types Mapping")
-print("cell_types = {")
-for k, v in cell_types_random.items():
-    print(f"    {k}: {v},")
-print("}")
+    possible_neighbors = [n for n in range(num_nodes) if n != node and len(connections[n]) < max_edges_per_node and n not in connections[node]]
+    neighbors = random.sample(possible_neighbors, min(num_edges, len(possible_neighbors)))
 
-print("\n# Random State Space")
-print("state_space = [")
-for conn in state_space_random:
-    print(f"    {conn},")
-print("]")
+    for neighbor in neighbors:
+        if neighbor not in connections[node]:
+            state_space.append([node, neighbor])
+            connections[node].add(neighbor)
+            connections[neighbor].add(node)  # Ensure bidirectional edge
 
-print("\n# Random Treasures")
-print(f"TREASURES = {TREASURES_RANDOM}")
+# Output in required format
+print("cell_types = {" + ", ".join(f"{k}: {v}" for k, v in cell_types.items()) + "}")
+print("\nstate_space = [" + ", ".join(str(edge) for edge in state_space) + "]")
+print(f"\nTREASURES = {set(treasure_nodes)}")
