@@ -1,8 +1,10 @@
 import sys
 import pandas as pd
+from math import fabs, inf
 import matplotlib.pyplot as plt
-from sklearn import datasets
+from sklearn import datasets, linear_model
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
 
 # Load and prepare data
 diabetes = datasets.load_diabetes()
@@ -19,7 +21,7 @@ def model(x, m, c):
     return m * x + c
 
 def cost(y, yh):
-    return ((y - yh) ** 2).mean() / 2
+    return ((y - yh) ** 2).mean()
 
 def derivatives(x, y, yh):
     n = len(y)
@@ -28,7 +30,7 @@ def derivatives(x, y, yh):
     return {'m': dJ_dm, 'c': dJ_dc}
 
 # Initialize parameters
-learningrate = 0.1
+learningrate = 0.3
 m = [0]
 c = [0]
 J = [cost(y_train['target'], X_train['bmi'].apply(lambda x: model(x, m[-1], c[-1])))]
