@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DeveloperToolsToolWindowSettingsV1" lastSelectedContentNodeId="base64-encoder-decoder">
+    <developerToolsConfigurations>
+      <developerToolConfiguration developerToolId="qr-code-generator" id="bc82ebfa-8003-4117-b8ac-a9e6793bff90" name="Workbench">
+        <properties>
+          <property key="contentText" type="INPUT" value="kotlin.String|lorem ispum dolores fucker" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="base64-encoder-decoder" id="a131cf11-96ac-418b-94e6-f5d3fad2aa33" name="Workbench">
+        <properties>
+          <property key="liveConversion" type="CONFIGURATION" value="kotlin.Boolean|false" />
+          <property key="sourceText" type="INPUT" value="kotlin.String|shibal seki" />
+          <property key="targetText" type="INPUT" value="kotlin.String|c2hpYmFsIHNla2k=" />
+        </properties>
+      </developerToolConfiguration>
+    </developerToolsConfigurations>
+  </component>
+</project>
