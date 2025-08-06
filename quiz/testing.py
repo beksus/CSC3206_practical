@@ -55,20 +55,18 @@ def add_clustering_result_to_data(df, kmModel):
   # 2. convert the cluster numbers (0,1,2,3,4,5) to alphabets (a,b,c,d,e)
   # 3. add the cluster outcome as a new column called "cresult"
   df['cresult'] = kmModel.predict(df[["publishedperformance", "estimatedperformance"]])
-  df['cresult'] = df['cresult'].apply(lambda x: chr(x + 97))  # 97 is 'a'
+  df['cresult'] = df['cresult'].apply(lambda x: chr(x + ord('a')))
   ####################################
   return df
 
 def train_decision_tree(df):
   ########## student's code ##########
   ##########    Task 6     ##########
-  # 1. initialise a decision tree model with maximum depth of 5 as variable: dtModel
-  # 2. train the decision tree model to classify based on inputs of
-  #    a. channelmin
-  #    b. channelmax
-  #    to identify the output of "estimatedperformance"
+  # 1. Import DecisionTreeClassifier from sklearn
   from sklearn.tree import DecisionTreeClassifier
+  # 2. Initialise a decision tree model with maximum depth of 5
   dtModel = DecisionTreeClassifier(max_depth=5, random_state=42)
+  # 3. Train the model using 'channelmin' and 'channelmax' as features, and 'estimatedperformance' as the target
   dtModel.fit(df[['channelmin', 'channelmax']], df['estimatedperformance'])
   ####################################
   return dtModel
@@ -76,16 +74,16 @@ def train_decision_tree(df):
 def test_decision_tree(df, dtModel):
   ########## student's code ##########
   ##########    Task 7     ##########
-  # 1. predict the class using the trained decision tree
-  # 2. add the predicted outcome as a new column called "dresult"
-  df['dresult'] = dtModel.predict(df[['channelmin', 'channelmax']])
-  df['dresult'] = df['dresult'].astype(str)
+  # 1. Predict the class using the trained decision tree for all rows
+  predictions = dtModel.predict(df[['channelmin', 'channelmax']])
+  # 2. Add the predicted outcome as a new column called "dresult"
+  df['dresult'] = predictions.astype(str)
   ####################################
   return df
 
 def save_to_file(df):
   ########## student's code ##########
   ##########    Task 8     ##########
-  # 1. save the dataframe "df" to a csv file with the name of "finalresults.csv"
+  # 1. Save the dataframe "df" to a csv file with the name of "finalresults.csv"
   df.to_csv("finalresults.csv", index=False)
   ####################################
